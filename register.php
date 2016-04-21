@@ -1,30 +1,32 @@
 <?php
 require_once 'core/init.php';
 
-if(Input::exists())
-    
+if(Input::exists() && Token::check(Input::get('token'))) {
+
+    echo "GOOD";
+
     $validate = new Validate();
 
     $validation = $validate->check($_POST, array(
-       'username' => array(
-           'required' => true,
+        'username' => array(
+            'required' => true,
             'min' => 2,
             'max' => 20,
             'unique' => 'users',
-       ),
-       'password' => array(
-           'required' => true,
-           'min' => 6
-       ),
-       'password_again' => array(
-           'required' => true,
-           'matches' => 'password'
-       ),
-       'name' => array(
-           'required' => true,
-           'min' => 2,
-           'max' => 50
-       )
+        ),
+        'password' => array(
+            'required' => true,
+            'min' => 6
+        ),
+        'password_again' => array(
+            'required' => true,
+            'matches' => 'password'
+        ),
+        'name' => array(
+            'required' => true,
+            'min' => 2,
+            'max' => 50
+        )
     ));
 
 if($validation->passed())
@@ -32,7 +34,7 @@ if($validation->passed())
 else
     foreach ($validation->errors() as $error)
         echo $error, '<br/>';
-    
+}
 ?>
 
 <form action="" method="POST">
@@ -59,5 +61,6 @@ else
         value="<?php echo escape(Input::get('name'))?>">
     </div>
 
+    <input type="hidden" name="token" value="<?=Token::generate()?>">
     <input type="submit" value="Register" >
 </form>
