@@ -72,12 +72,12 @@ class DB{
     private function action($action, $table, $where = array()){
 
         if(count($where) === 3){
-            $operators = array('=', '>', '<', '>=', '<=', '=');
+            $operators = array('=', '>', '<', '>=', '<=');
 
             list($field, $operator, $value) = $where;
 
             if(in_array($operator, $operators)){
-                $sql = "{$action} * FROM {$table} WHERE {$field} {$operator} ?";
+                $sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
 
                 if(!$this->query($sql, array($value))->error()){
                     return $this;
@@ -94,7 +94,7 @@ class DB{
      * @return bool|DB
      */
     public function get($table, $where){
-        return $this->action('SELECT *', $table, $where);
+        return $this->action('SELECT * ', $table, $where);
     }
 
     /**
@@ -121,5 +121,64 @@ class DB{
      */
     public function count(){
         return $this->_count;
+    }
+
+    /**
+     * Gets the query result
+     * @return mixed
+     */
+    public function results(){
+        return $this->_results;
+    }
+
+    /**
+     * Gets the first query result
+     * @return mixed
+     */
+    public function first(){
+        return $this->results()[0];
+    }
+
+    /**
+     * Inserts a record into db table
+     * @param $table
+     * @param array $fields
+     * @return bool
+     */
+    public function insert($table, $fields = array()){
+        if(count($fields)){
+            $keys = array_keys($fields);
+            $values = substr(str_repeat('?, ', count($fields)), 0, -2);
+
+            $sql = "INSERT INTO users (`" . implode('`, `', $keys) ."`) 
+                   VALUES ({$values})";
+
+            if($this->query($sql, $fields))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Updates a record in the db table
+     * @param $table
+     * @param $id
+     * @param $fields
+     * @return bool
+     */
+    public function update($table, $id, $fields){
+        $set = '';
+
+        foreach ($fields as $name => $value)
+            $set .= "{$name} = ?, ";
+
+        $set = substr($set, 0, -2);
+
+        $sql = "UPDATE {$table} SET {$set} WHERE id = {$id}";
+
+        if(!$this->query($sql, $fields)->error())
+            return true;
+
+        return false;
     }
 }
