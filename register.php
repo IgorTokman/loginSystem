@@ -37,7 +37,7 @@ if($validation->passed()) {
     try{
         $user->create(array(
             'username' =>  Input::get('username'),
-            'password' =>  Input::get('password', $salt),
+            'password' =>  Hash::make(Input::get('password'), $salt),
             'salt' =>  $salt,
             'name' =>  Input::get('name'),
             'joined' =>  date('Y-m-d H:i:s'),
@@ -45,7 +45,7 @@ if($validation->passed()) {
         ));
 
         Session::flash('home', "You have been registered and can now log in");
-        Redirect::to(404);
+        Redirect::to('index.php');
 
     }catch (Exception $e){
         die($e->getMessage());
