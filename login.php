@@ -16,7 +16,7 @@ if(Input::exists())
                 Input::get('password'));
 
             if($login)
-                echo "Success";
+                Redirect::to('index.php');
             else
                 echo "Sorry, log in is failed";
         }
