@@ -106,4 +106,12 @@ class User{
         Session::delete($this->_sessionName);
         Cookie::delete($this->_cookieName);
     }
+
+    public function update($field = array(), $id = null){
+        if(!$id && $this->isLoggedIn())
+            $id = $this->data()->id;
+
+        if(!$this->_db->update('users', $id, $field))
+            throw new Exception('There was a problem updating');
+    }
 }

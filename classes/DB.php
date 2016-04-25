@@ -175,7 +175,7 @@ class DB{
         $set = substr($set, 0, -2);
 
         $sql = "UPDATE {$table} SET {$set} WHERE id = {$id}";
-
+        
         if(!$this->query($sql, $fields)->error())
             return true;
 
