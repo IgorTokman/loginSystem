@@ -150,7 +150,7 @@ class DB{
             $keys = array_keys($fields);
             $values = substr(str_repeat('?, ', count($fields)), 0, -2);
 
-            $sql = "INSERT INTO users (`" . implode('`, `', $keys) ."`) 
+            $sql = "INSERT INTO {$table} (`" . implode('`, `', $keys) ."`) 
                    VALUES ({$values})";
 
             if($this->query($sql, $fields))
