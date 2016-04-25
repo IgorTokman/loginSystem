@@ -17,7 +17,7 @@ if($user->isLoggedIn()) {
 
     <ul>
         <li>
-            <a href="">Log out</a>
+            <a href="logout.php">Log out</a>
         </li>
     </ul>
 <?php
