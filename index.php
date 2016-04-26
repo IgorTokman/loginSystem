@@ -22,6 +22,9 @@ if($user->isLoggedIn()) {
         <li>
             <a href="update.php">Update details</a>
         </li>
+        <li>
+            <a href="changepassword.php">Change password</a>
+        </li>
     </ul>
 <?php
     }
