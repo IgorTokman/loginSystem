@@ -114,4 +114,19 @@ class User{
         if(!$this->_db->update('users', $id, $field))
             throw new Exception('There was a problem updating');
     }
+
+    public function hasPermission($key){
+        $group = $this->_db->get('groups', array(
+            'id', '=', $this->data()->group_id
+        ));
+
+        if($group->count()){
+            $permissions = json_decode($group->first()->permissions, true);
+
+            if ($permissions[$key] === 1){
+                return true;
+            }
+        }
+        return false;
+    }
 }

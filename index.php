@@ -27,7 +27,11 @@ if($user->isLoggedIn()) {
         </li>
     </ul>
 <?php
+
+    if($user->hasPermission('admin')){
+        echo '<p>You are an admin</p>';
     }
+}
     else {
 ?>
 
